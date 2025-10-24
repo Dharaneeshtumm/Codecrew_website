@@ -43,7 +43,7 @@
             z-index: 1;
         }
 
-        /* Header */
+        /* --- Header --- */
         header {
             position: fixed;
             top: 0;
@@ -80,6 +80,7 @@
         }
         .logo img{
             height: 70px;
+            vertical-align: middle;
         }
 
         .nav-links {
@@ -94,7 +95,7 @@
             font-weight: 600;
             position: relative;
             transition: color 0.3s;
-            font-size: 1.5rem;
+            font-size: 1.1rem; /* Adjusted for desktop space */
         }
 
         .nav-links a::after {
@@ -132,7 +133,7 @@
             transition: all 0.3s;
         }
 
-        /* Hero Section */
+        /* --- Hero Section --- */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -141,8 +142,7 @@
             text-align: center;
             padding: 2rem;
             position: relative;
-            margin-top: 2.5rem;
-            
+            margin-top: 0; /* Let min-height handle spacing */
         }
 
         .hero-content {
@@ -151,7 +151,7 @@
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-size: clamp(3rem, 10vw, 6rem); /* Improved scaling for all devices */
             font-weight: 900;
             margin-bottom: 1rem;
             background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
@@ -165,7 +165,7 @@
         .hero .tagline {
             font-size: clamp(1.2rem, 3vw, 2rem);
             color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 2rem;
+            margin-bottom: 1rem; /* Reduced margin */
             font-weight: 300;
         }
 
@@ -175,7 +175,7 @@
         }
         .hero-content .detail{
             color:var(--primary);
-            font-size:1.5rem;
+            font-size: clamp(1rem, 2vw, 1.5rem); /* Also improved scaling */
         }
 
         @keyframes glitch {
@@ -229,7 +229,7 @@
             transform: translateY(-3px);
         }
 
-        /* Countdown Timer */
+        /* --- Countdown Timer --- */
         .countdown {
             display: flex;
             gap: 2rem;
@@ -244,6 +244,8 @@
             border-radius: 15px;
             border: 1px solid rgba(0, 255, 136, 0.2);
             min-width: 120px;
+            flex: 1; /* Allows for better resizing in flex context */
+            max-width: 140px; /* Controls size on larger screens */
         }
 
         .countdown-item span {
@@ -261,7 +263,7 @@
             text-transform: uppercase;
         }
 
-        /* Section Styles */
+        /* --- Section Styles --- */
         section {
             padding: 6rem 2rem;
             max-width: 1400px;
@@ -375,7 +377,7 @@
             color: var(--primary);
         }
 
-        /* Timeline */
+        /* --- Timeline --- */
         .timeline {
             position: relative;
             max-width: 800px;
@@ -467,18 +469,18 @@
             color: var(--secondary);
             margin-bottom: 0.5rem;
         }
-        
+
         /* Make club card <a> tags behave like the whole card */
         .club-card a {
             text-decoration: none;
             color: inherit;
         }
-        
+
         .club-card a h4 {
              color: var(--secondary);
              transition: color 0.3s;
         }
-        
+
         .club-card a:hover h4 {
             color: var(--primary);
         }
@@ -497,6 +499,7 @@
         }
         .footer-content img{
             height: 70px;
+            vertical-align: middle;
         }
         .footer-content p{
             font-weight: 800;
@@ -535,58 +538,6 @@
         .fade-in {
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background: rgba(10, 14, 39, 0.98);
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 3rem;
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-            }
-
-            .nav-links.active {
-                transform: translateX(0);
-            }
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            .timeline::before {
-                left: 0;
-            }
-
-            .timeline-content {
-                width: 100%;
-                margin-left: 2rem;
-            }
-
-            .timeline-item:nth-child(even) .timeline-content {
-                order: 0;
-            }
-
-            .timeline-dot {
-                left: 0;
-            }
-
-            .countdown {
-                gap: 1rem;
-            }
-
-            .countdown-item {
-                min-width: 100px;
-                padding: 1rem 1.5rem;
-            }
         }
 
         /* --- STYLES FOR CLUB DETAILS (ADAPTED) --- */
@@ -639,7 +590,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .contact-table td {
              color: rgba(255, 255, 255, 0.8);
         }
@@ -671,13 +622,13 @@
             cursor: pointer;
             margin-bottom: 1.5rem;
         }
-        
+
         .btn-back-to-grid:hover {
             background: var(--primary);
             color: var(--dark);
             transform: translateY(-3px);
         }
-        
+
         /* --- NEW MODAL STYLES --- */
         .modal-overlay {
             position: fixed;
@@ -729,7 +680,7 @@
         .close-modal-btn:hover {
             color: var(--primary);
         }
-        
+
         /* Re-use contact table styles from clubs */
         .modal-content .contact-table-container {
              max-height: 50vh;
@@ -741,16 +692,193 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        
+
+
+        /* ========================================================== */
+        /* RESPONSIVE STYLES (Mobile First)         */
+        /* ========================================================== */
+
+        /* Mobile devices (<= 768px) */
+        @media (max-width: 768px) {
+            /* Header/Nav */
+            nav {
+                padding: 0.8rem 1.5rem;
+            }
+
+            .logo img {
+                height: 50px; /* Smaller logo on mobile */
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 66px; /* Adjusted to match new logo/header size */
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 66px);
+                background: rgba(10, 14, 39, 0.98);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .nav-links a {
+                font-size: 1.5rem; /* Larger links in mobile menu */
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            /* Hero Section - Maximize impact on small screen */
+            .hero {
+                padding: 8rem 1rem 4rem 1rem; /* More top padding to clear header */
+                min-height: 80vh; /* Don't force 100vh if content is long */
+            }
+
+            .hero h1 {
+                letter-spacing: 2px;
+            }
+
+            /* Countdown */
+            .countdown {
+                gap: 0.5rem; /* Smaller gap */
+                justify-content: space-between;
+            }
+
+            .countdown-item {
+                min-width: 70px; /* Allow smaller width */
+                max-width: 25%; /* Use percentage to ensure 4 fit side-by-side */
+                padding: 0.8rem 0.5rem;
+            }
+
+            .countdown-item span {
+                font-size: 1.5rem; /* Smaller font for numbers */
+            }
+
+            .countdown-item p {
+                font-size: 0.7rem; /* Smaller label */
+                margin-top: 0.3rem;
+            }
+
+            .cta-group {
+                flex-direction: column; /* Stack buttons vertically */
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+
+            .btn {
+                width: 100%; /* Full width buttons */
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            /* General Sections */
+            section {
+                padding: 4rem 1.5rem; /* Less vertical padding */
+            }
+
+            .section-subtitle {
+                margin-bottom: 2rem;
+                font-size: 1rem;
+            }
+
+            /* About Cards Grid */
+            .cards-grid {
+                grid-template-columns: 1fr; /* Stack cards vertically */
+                gap: 1.5rem;
+            }
+
+            /* Timeline - Already good, just ensure alignment */
+            .timeline::before {
+                left: 0;
+            }
+
+            .timeline-item {
+                justify-content: flex-start; /* Items always start from the left */
+                margin-bottom: 2rem;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin-left: 2rem; /* Spacing from the line */
+                order: 0 !important; /* Force all content to the right of the line */
+            }
+
+            .timeline-dot {
+                left: 0;
+            }
+
+            /* Club Details */
+            .contact-table th,
+            .contact-table td {
+                padding: 0.7rem; /* Smaller padding */
+                font-size: 0.9rem;
+            }
+
+            .club-section h3 {
+                font-size: 1.5rem;
+            }
+
+            /* Modal */
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Tablet and Small Laptop devices (769px to 1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+
+            /* Header/Nav */
+            nav {
+                padding: 1rem 2rem;
+            }
+
+            .logo img {
+                height: 60px;
+            }
+
+            /* Hero Section */
+            .hero {
+                padding: 6rem 2rem 4rem 2rem;
+            }
+
+            /* Countdown */
+            .countdown {
+                gap: 1rem;
+            }
+
+            /* Sections */
+            section {
+                padding: 5rem 2rem;
+            }
+
+            /* Timeline - Ensure it keeps its split layout but handles a smaller screen */
+            .timeline-content {
+                padding: 1.2rem;
+                width: 48%; /* Slightly wider content area */
+            }
+
+            .cards-grid, .themes-grid {
+                gap: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="canvas-container"></div>
-    
+
     <div id="content">
         <header id="header">
             <nav>
-                <div class="logo"><img src="jbrec-removebg-preview.png" alt="JBREC"></div>
+                <!-- Note: Placeholders used for images. Please replace with actual assets. -->
+                <div class="logo"><img src="https://placehold.co/100x70/0A0E27/00FF88?text=JBREC" alt="JBREC Logo"></div>
                 <button class="menu-toggle" id="menuToggle">
                     <span></span>
                     <span></span>
@@ -762,7 +890,6 @@
                     <li><a href="#themes">Themes</a></li>
                     <li><a href="#schedule">Schedule</a></li>
                     <li><a href="#clubs">Clubs</a></li>
-                    <!-- UPDATED: This link now triggers the modal -->
                     <li><a href="#" id="show-contact-modal-link">Contact</a></li>
                 </ul>
             </nav>
@@ -773,7 +900,7 @@
                 <h1 class="glitch">CODE-A-THON 2025</h1>
                 <p class="tagline">Innovate. Achieve. Lead.</p>
                 <p style="margin-bottom: 2rem;" class="detail">By Dept Of Computer Science and Engineering</p>
-                
+
                 <div class="countdown" id="countdown">
                     <div class="countdown-item">
                         <span id="days">00</span>
@@ -803,7 +930,7 @@
         <section id="about">
             <h2 class="section-title">About Code-A-Thon</h2>
             <p class="section-subtitle">A premier coding competition where innovation meets execution</p>
-            
+
             <div class="cards-grid">
                 <div class="card fade-in">
                     <span class="card-icon">🚀</span>
@@ -831,7 +958,7 @@
         <section id="themes">
             <h2 class="section-title">Challenge Themes</h2>
             <p class="section-subtitle">Choose your arena and create impactful solutions</p>
-            
+
             <div class="themes-grid">
                 <div class="theme-card">
                     <h4>🌱 Sustainability Tech</h4>
@@ -855,7 +982,7 @@
         <section id="schedule">
             <h2 class="section-title">Event Schedule</h2>
             <p class="section-subtitle">Your roadmap to success</p>
-            
+
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-content">
@@ -903,7 +1030,7 @@
         <section id="clubs">
             <h2 class="section-title">Code Crew Clubs</h2>
             <p class="section-subtitle">Join our vibrant community of creators and innovators</p>
-            
+
             <!-- THIS IS THE MAIN CLUB GRID -->
             <div class="clubs-grid">
                 <div class="club-card">
@@ -923,7 +1050,7 @@
                 </div>
                 <div class="club-card">
                     <span class="club-icon">📸</span>
-                    <a href="#photography" class="club-link"><h4>Photography Club</h4></a>                    
+                    <a href="#photography" class="club-link"><h4>Photography Club</h4></a>
                     <p>Capture moments, create memories</p>
                 </div>
                 <div class="club-card">
@@ -938,7 +1065,7 @@
                 </div>
                 <div class="club-card">
                     <span class="club-icon">🧠</span>
-                    <a href="#ai" class="club-link"><h4>AI Club</h4></a>                    
+                    <a href="#ai" class="club-link"><h4>AI Club</h4></a>
                     <p>Pioneer intelligent systems</p>
                 </div>
                 <div class="club-card">
@@ -953,10 +1080,9 @@
                 </div>
             </div>
 
-            <!-- 
+            <!--
             --- CLUB DETAILS CONTAINER ---
-            This section holds all the details from club-details.html
-            It's hidden by default with "display: none;"
+            This section holds all the details, initially hidden.
             -->
             <div id="club-details-container" style="display: none;">
 
@@ -1317,18 +1443,17 @@
 
         <footer id="contact"> <!-- Footer remains as the page bottom contact -->
             <div class="footer-content">
-                <img src="codecrew logo.png" alt="Code Crew">
+                <img src="https://placehold.co/100x70/0A0E27/00FF88?text=CODE+CREW" alt="Code Crew Logo">
                 <h3 style="color: var(--primary); margin-bottom: 1rem;">CODE CREW</h3>
                 <p style=" margin-bottom: 2rem;">Department of Computer Science and Engineering</p>
-                
+
                 <div class="footer-links">
                     <a href="#about">About</a>
                     <a href="#themes">Themes</a>
                     <a href="#schedule">Schedule</a>
                     <a href="#clubs">Clubs</a>
-                    <a href="mailto:codecrew@jbrec.edu">Email Us</a>
                 </div>
-                
+
                 <p style="color: rgba(255,255,255,0.4); margin-top: 2rem;">&copy; 2025 Joginpally B.R Engineering College. All rights reserved.</p>
             </div>
         </footer>
@@ -1376,19 +1501,19 @@
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        
+
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
-        
+
         // Create floating particles
         const particlesGeometry = new THREE.BufferGeometry();
         const particlesCount = 1000;
         const posArray = new Float32Array(particlesCount * 3);
-        
+
         for(let i = 0; i < particlesCount * 3; i++) {
             posArray[i] = (Math.random() - 0.5) * 100;
         }
-        
+
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         const particlesMaterial = new THREE.PointsMaterial({
             size: 0.1,
@@ -1396,10 +1521,10 @@
             transparent: true,
             opacity: 0.8
         });
-        
+
         const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
         scene.add(particlesMesh);
-        
+
         // Create rotating torus
         const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
         const material = new THREE.MeshBasicMaterial({
@@ -1410,37 +1535,37 @@
         });
         const torus = new THREE.Mesh(geometry, material);
         scene.add(torus);
-        
+
         camera.position.z = 30;
-        
-        // Animation
+
+        // Animation loop
         function animate() {
             requestAnimationFrame(animate);
-            
+
             torus.rotation.x += 0.001;
             torus.rotation.y += 0.002;
-            
+
             particlesMesh.rotation.y += 0.0005;
-            
+
             renderer.render(scene, camera);
         }
         animate();
-        
+
         // Handle window resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
-        
+
         // Mobile menu toggle
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
-        
+
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
-        
+
         // Close menu when clicking a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
@@ -1450,7 +1575,7 @@
                 }
             });
         });
-        
+
         // Header scroll effect
         const header = document.getElementById('header');
         window.addEventListener('scroll', () => {
@@ -1461,7 +1586,7 @@
             }
         });
 
-        
+
         document.addEventListener('DOMContentLoaded', () => {
 
             // --- Club Details Show/Hide Logic ---
@@ -1506,11 +1631,13 @@
                 if (clubDetailsContainer) {
                     clubDetailsContainer.style.display = 'none';
                 }
-                
+
                 // Show the main grid
                 if (clubGrid) {
                     clubGrid.style.display = 'grid'; // Use 'grid' to restore layout
                 }
+                // Scroll back to the top of the clubs section
+                clubsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
             // Add click listeners to all club links
@@ -1535,7 +1662,7 @@
             const showContactModalLink = document.getElementById('show-contact-modal-link');
             const contactModal = document.getElementById('contact-modal');
             const closeModalBtn = contactModal.querySelector('.close-modal-btn');
-            
+
             // Show the modal
             if (showContactModalLink) {
                 showContactModalLink.addEventListener('click', (e) => {
@@ -1549,7 +1676,7 @@
                     }
                 });
             }
-            
+
             // Hide the modal with the 'X' button
             if (closeModalBtn) {
                 closeModalBtn.addEventListener('click', () => {
@@ -1558,7 +1685,7 @@
                     }
                 });
             }
-            
+
             // Hide the modal by clicking the backdrop
             if (contactModal) {
                 contactModal.addEventListener('click', (e) => {
@@ -1572,26 +1699,26 @@
 
 
         }); // --- END of DOMContentLoaded ---
-        
 
-        // Countdown Timer (Set to October 28, 2025, 10:00 AM)
+
+        // Countdown Timer (Set to October 28, 2025, 09:30 AM)
         const eventDate = new Date('2025-10-28T09:30:00').getTime();
-        
+
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = eventDate - now;
-            
+
             if (distance < 0) {
                 clearInterval(countdownInterval);
                 document.getElementById('countdown').innerHTML = '<h3 style="color: var(--primary); font-size: 1.5rem; animation: fadeInUp 0.5s;">Event is Live! 🚀</h3>';
                 return;
             }
-            
+
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
+
             const daysEl = document.getElementById('days');
             const hoursEl = document.getElementById('hours');
             const minutesEl = document.getElementById('minutes');
@@ -1602,10 +1729,10 @@
             if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
             if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
         }
-        
+
         updateCountdown(); // Run once immediately
         const countdownInterval = setInterval(updateCountdown, 1000); // Update every second
-        
+
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1616,7 +1743,7 @@
                 }
 
                 const href = this.getAttribute('href');
-                
+
                 // Allow default behavior for external links or different pages
                 if (href.startsWith('#')) {
                     e.preventDefault();
@@ -1630,13 +1757,13 @@
                 }
             });
         });
-        
+
         // Intersection Observer for fade-in animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
         };
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1646,32 +1773,23 @@
                 }
             });
         }, observerOptions);
-        
+
         document.querySelectorAll('.fade-in').forEach(el => {
             el.style.opacity = '0'; // Ensure it's hidden to start
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             observer.observe(el);
         });
-        
+
         // Mouse parallax effect for hero section
         document.addEventListener('mousemove', (e) => {
             const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
             const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-            
+
             torus.rotation.x = moveY * 0.05;
             torus.rotation.y = moveX * 0.05;
         });
-        
-        // Add particle interaction on mouse move
-        let mouseX = 0;
-        let mouseY = 0;
-        
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-        
+
         // Card tilt effect
         const cards = document.querySelectorAll('.card, .theme-card, .club-card');
         cards.forEach(card => {
@@ -1679,31 +1797,31 @@
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                
+
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                
+
                 const rotateX = (y - centerY) / 10;
                 const rotateY = (centerX - x) / 10;
-                
+
                 // Apply hover effect only if not a link
                 if (!card.querySelector('a.club-link')) {
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
                 }
             });
-            
+
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
             });
         });
-        
+
         // Typing effect for tagline
         const tagline = document.querySelector('.tagline');
         if (tagline) {
             const text = tagline.textContent;
             tagline.textContent = '';
             let i = 0;
-            
+
             function typeWriter() {
                 if (i < text.length) {
                     tagline.textContent += text.charAt(i);
@@ -1711,10 +1829,10 @@
                     setTimeout(typeWriter, 100);
                 }
             }
-            
+
             setTimeout(typeWriter, 500);
         }
-        
+
         // Add glow effect to buttons on hover
         const buttons = document.querySelectorAll('.btn');
         buttons.forEach(btn => {
@@ -1722,14 +1840,14 @@
                 this.style.transition = 'all 0.3s ease';
             });
         });
-        
+
         // Random color change for particles
         let hue = 0;
         setInterval(() => {
             hue = (hue + 1) % 360;
             particlesMaterial.color.setHSL(hue / 360, 1, 0.5);
         }, 50);
-        
+
         const style = document.createElement('style');
         style.textContent = `
             @keyframes bounce {
@@ -1739,7 +1857,7 @@
             }
         `;
         document.head.appendChild(style);
-        
+
     </script>
 </body>
 </html>
