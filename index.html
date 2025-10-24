@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Crew CodeAThon - Innovate. Achieve. Lead.</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #00d4ff;
+            --accent: #ff006e;
+            --dark: #0a0e27;
+            --darker: #050816;
+            --card-bg: rgba(15, 23, 42, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--darker);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        #content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(10, 14, 39, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.1);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .logo img{
+            height: 70px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s;
+            font-size: 1.5rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            transition: all 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            margin-top: 2.5rem;
+            
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            line-height: 1.1;
+        }
+
+        .hero .tagline {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .glitch {
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+        .hero-content .detail{
+            color:var(--primary);
+            font-size:1.5rem;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: var(--card-bg);
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            min-width: 120px;
+        }
+
+        .countdown-item span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .countdown-item p {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 700px;
+            margin: 0 auto 4rem;
+            font-size: 1.1rem;
+        }
+
+        /* About Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(0, 255, 136, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.2);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Themes Section */
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .theme-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border-left: 4px solid;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .theme-card:nth-child(1) { border-left-color: #00ff88; }
+        .theme-card:nth-child(2) { border-left-color: #00d4ff; }
+        .theme-card:nth-child(3) { border-left-color: #ff006e; }
+        .theme-card:nth-child(4) { border-left-color: #ffd600; }
+
+        .theme-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .theme-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            width: 45%;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            order: 2;
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .timeline-time {
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Clubs Grid */
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .club-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .club-card:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .club-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .club-card h4 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Make club card <a> tags behave like the whole card */
+        .club-card a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .club-card a h4 {
+             color: var(--secondary);
+             transition: color 0.3s;
+        }
+        
+        .club-card a:hover h4 {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(5, 8, 22, 0.9);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .footer-content img{
+            height: 70px;
+        }
+        .footer-content p{
+            font-weight: 800;
+            color: #00ff88;
+        }
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: rgba(10, 14, 39, 0.98);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .timeline::before {
+                left: 0;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin-left: 2rem;
+            }
+
+            .timeline-item:nth-child(even) .timeline-content {
+                order: 0;
+            }
+
+            .timeline-dot {
+                left: 0;
+            }
+
+            .countdown {
+                gap: 1rem;
+            }
+
+            .countdown-item {
+                min-width: 100px;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        /* --- STYLES FOR CLUB DETAILS (ADAPTED) --- */
+        #club-details-container {
+            max-width: 900px; /* Match the look of the timeline */
+            margin: 4rem auto 0;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .club-section {
+            background: var(--card-bg);
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.1); /* primary border */
+        }
+
+        .club-section h3 {
+            color: var(--secondary); /* Use secondary color from index.html */
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px dashed rgba(0, 212, 255, 0.3); /* secondary color */
+        }
+
+        .contact-table-container {
+            overflow-x: auto;
+        }
+
+        .contact-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 400px;
+            background-color: rgba(10, 14, 39, 0.7); /* Darker, matching header */
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .contact-table th,
+        .contact-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1); /* primary border */
+        }
+
+        .contact-table th {
+            background-color: rgba(0, 212, 255, 0.6); /* secondary bg */
+            color: var(--dark);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .contact-table td {
+             color: rgba(255, 255, 255, 0.8);
+        }
+
+        .contact-table tbody tr:hover {
+            background-color: rgba(0, 255, 136, 0.15); /* primary bg */
+        }
+
+        .sno-cell {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .contact-number {
+            color: var(--primary); /* primary color */
+            font-weight: 600;
+        }
+
+        .btn-back-to-grid {
+            /* Steal styles from .btn-secondary */
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 0.5rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-back-to-grid:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        
+        /* --- NEW MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8); /* Darker backdrop */
+            backdrop-filter: blur(5px);
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--primary);
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.4);
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .modal-content h3 {
+            color: var(--primary);
+            font-size: 1.75rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        .close-modal-btn:hover {
+            color: var(--primary);
+        }
+        
+        /* Re-use contact table styles from clubs */
+        .modal-content .contact-table-container {
+             max-height: 50vh;
+             overflow-y: auto;
+        }
+
+        /* Add a keyframe for the modal fade-in */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="content">
+        <header id="header">
+            <nav>
+                <div class="logo"><img src="jbrec-removebg-preview.png" alt="JBREC"></div>
+                <button class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#themes">Themes</a></li>
+                    <li><a href="#schedule">Schedule</a></li>
+                    <li><a href="#clubs">Clubs</a></li>
+                    <!-- UPDATED: This link now triggers the modal -->
+                    <li><a href="#" id="show-contact-modal-link">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1 class="glitch">CODE-A-THON 2025</h1>
+                <p class="tagline">Innovate. Achieve. Lead.</p>
+                <p style="margin-bottom: 2rem;" class="detail">By Dept Of Computer Science and Engineering</p>
+                
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <span id="days">00</span>
+                        <p>Days</p>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="hours">00</span>
+                        <p>Hours</p>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="minutes">00</span>
+                        <p>Minutes</p>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="seconds">00</span>
+                        <p>Seconds</p>
+                    </div>
+                </div>
+
+                <div class="cta-group">
+                    <a href="https://forms.gle/2nGGsgoUCWCfTQni8" class="btn btn-primary">Register Now</a>
+                    <a href="#about" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2 class="section-title">About Code-A-Thon</h2>
+            <p class="section-subtitle">A premier coding competition where innovation meets execution</p>
+            
+            <div class="cards-grid">
+                <div class="card fade-in">
+                    <span class="card-icon">🚀</span>
+                    <h3>06-Hour Challenge</h3>
+                    <p>Push your limits in an intense 06-hour coding marathon. Build, test, and deploy groundbreaking solutions.</p>
+                </div>
+                <div class="card fade-in">
+                    <span class="card-icon">🏆</span>
+                    <h3>Amazing Prizes</h3>
+                    <p>Cash prizes, tech gadgets, internship opportunities, and exclusive swag for winners and participants.</p>
+                </div>
+                <div class="card fade-in">
+                    <span class="card-icon">🤝</span>
+                    <h3>Expert Mentorship</h3>
+                    <p>Learn from industry professionals and experienced mentors available throughout the event.</p>
+                </div>
+                <div class="card fade-in">
+                    <span class="card-icon">💡</span>
+                    <h3>Innovation Focused</h3>
+                    <p>Develop real-world solutions addressing challenges in sustainability, AI, and community building.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="themes">
+            <h2 class="section-title">Challenge Themes</h2>
+            <p class="section-subtitle">Choose your arena and create impactful solutions</p>
+            
+            <div class="themes-grid">
+                <div class="theme-card">
+                    <h4>🌱 Sustainability Tech</h4>
+                    <p>Build solutions for environmental challenges, renewable energy, and sustainable living.</p>
+                </div>
+                <div class="theme-card">
+                    <h4>🤖 AI & Machine Learning</h4>
+                    <p>Harness the power of AI to solve complex problems and create intelligent systems.</p>
+                </div>
+                <div class="theme-card">
+                    <h4>🏘️ Community Building</h4>
+                    <p>Develop platforms that connect people, foster collaboration, and strengthen communities.</p>
+                </div>
+                <div class="theme-card">
+                    <h4>🎓 Education Innovation</h4>
+                    <p>Transform learning experiences with cutting-edge educational technology solutions.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="schedule">
+            <h2 class="section-title">Event Schedule</h2>
+            <p class="section-subtitle">Your roadmap to success</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <p class="timeline-time">Day 1 - 09:30 AM</p>
+                        <h4>Opening Ceremony</h4>
+                        <p>Keynote speeches and event kickoff</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <p class="timeline-time">Day 1 - 10:00 AM</p>
+                        <h4>Hacking Begins</h4>
+                        <p>Start building your project</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <p class="timeline-time">Day 1 - 01:30 AM</p>
+                        <h4>Submission Deadline</h4>
+                        <p>Final project submissions</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <p class="timeline-time">Day 1 - 02:00 PM</p>
+                        <h4>Presentations & Judging</h4>
+                        <p>Showcase your innovation</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <p class="timeline-time">Day 1 - 03:30 PM</p>
+                        <h4>Winner Announcement</h4>
+                        <p>Awards ceremony and closing</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="clubs">
+            <h2 class="section-title">Code Crew Clubs</h2>
+            <p class="section-subtitle">Join our vibrant community of creators and innovators</p>
+            
+            <!-- THIS IS THE MAIN CLUB GRID -->
+            <div class="clubs-grid">
+                <div class="club-card">
+                    <span class="club-icon">🎨</span>
+                    <a href="#arts" class="club-link"><h4>Arts Club</h4></a>
+                    <p>Express creativity through visual arts</p>
+                </div>
+                <div class="club-card">
+                    <span class="club-icon">🎤</span>
+                    <a href="#singing" class="club-link"><h4>Singing Club</h4></a>
+                    <p>Harmonize voices and passion</p>
+                </div>
+                <div class="club-card">
+                    <span class="club-icon">💃</span>
+                    <a href="#culturals-dance" class="club-link"><h4>Dancing Club</h4></a>
+                    <p>Move to the rhythm of excellence</p>
+                </div>
+                <div class="club-card">
+                    <span class="club-icon">📸</span>
+                    <a href="#photography" class="club-link"><h4>Photography Club</h4></a>                    
+                    <p>Capture moments, create memories</p>
+                </div>
+                <div class="club-card">
+                    <span class="club-icon">🌐</span>
+                    <a href="#web-development" class="club-link"><h4>Web Club</h4></a>
+                    <p>Build the digital future</p>
+                </div>
+                <div class="club-card">
+                    <span class="club-icon">📊</span>
+                    <a href="#ai-ml" class="club-link"><h4>Data Mining & ML Club</h4></a>
+                    <p>Unlock insights from data</p>
+                </div>
+                <div class="club-card">
+                    <span class="club-icon">🧠</span>
+                    <a href="#ai" class="club-link"><h4>AI Club</h4></a>                    
+                    <p>Pioneer intelligent systems</p>
+                </div>
+                <div class="club-card">
+                    <span class="club-icon">💡</span>
+                    <a href="#innovation" class="club-link"><h4>Innovation Club</h4></a>
+                    <p>Transform ideas into reality</p>
+                </div>
+                <div class="club-card">
+                    <span class="club-icon">🤝</span>
+                    <a href="#skill-development" class="club-link"><h4>Skill Development</h4></a>
+                    <p>Grow beyond technical skills</p>
+                </div>
+            </div>
+
+            <!-- 
+            --- CLUB DETAILS CONTAINER ---
+            This section holds all the details from club-details.html
+            It's hidden by default with "display: none;"
+            -->
+            <div id="club-details-container" style="display: none;">
+
+                <div id="web-development" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>🌐 Web Development</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>M.Sateesh Reddy</td>
+                                    <td class="contact-number">8639241112</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>J.Bhupesh Sai Sri</td>
+                                    <td class="contact-number">9989793365</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>D.Bindhu</td>
+                                    <td class="contact-number">9398783407</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>S.Sudhakar</td>
+                                    <td class="contact-number">9949129475</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="ai" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>🧠 AI Club</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>A.Haricharn</td>
+                                    <td class="contact-number">8522879848</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>G.Nikhil</td>
+                                    <td class="contact-number">9014279601</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>A.Medhasree</td>
+                                    <td class="contact-number">9391159618</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>G.Sowmya</td>
+                                    <td class="contact-number">9347180502</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="ai-ml" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>🧠 Artificial Intelligence & ML</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>T.Vinuthna</td>
+                                    <td class="contact-number">9000311549</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>P.Shashank</td>
+                                    <td class="contact-number">9000111458</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>D.Tejaswi</td>
+                                    <td class="contact-number">6281653544</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>D.Lokesh Rao</td>
+                                    <td class="contact-number">9492469054</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="innovation" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>💡 Innovation</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>B.Gayathri</td>
+                                    <td class="contact-number">8985413089</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>M.Shiva Preetham</td>
+                                    <td class="contact-number">9949035494</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>D.Sai Venkat</td>
+                                    <td class="contact-number">8341120221</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>K.Sowmya</td>
+                                    <td class="contact-number">9989780125</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="skill-development" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>🤝 Skill Development</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>T.Dharaneesh</td>
+                                    <td class="contact-number">9000311279</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>G.Shashidhar</td>
+                                    <td class="contact-number">9100651007</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>G.Nikhil</td>
+                                    <td class="contact-number">9014279601</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>A.Medhasree</td>
+                                    <td class="contact-number">9391159618</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">5</td>
+                                    <td>G.Sowmya</td>
+                                    <td class="contact-number">9347180502</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="photography" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>📸 Photography</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>Rishikesh Swami</td>
+                                    <td class="contact-number">8433608104</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>CH.Rohith</td>
+                                    <td class="contact-number">7207587311</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>Abdul kareem</td>
+                                    <td class="contact-number">9440731743</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>G.Shyam</td>
+                                    <td class="contact-number">9346841757</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">5</td>
+                                    <td>S.Shiva Nithin</td>
+                                    <td class="contact-number">8885209603</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="arts" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>🎨 Arts</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>P.Sravani</td>
+                                    <td class="contact-number">7337522307</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>M.Santosh</td>
+                                    <td class="contact-number">7337094902</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>B.Snehith</td>
+                                    <td class="contact-number">9392421687</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>C.Snehitha</td>
+                                    <td class="contact-number">9390040290</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="culturals-dance" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>💃 Culturals (Dance)</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>S.Sathya Durga</td>
+                                    <td class="contact-number">6281897375</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>B.Amala</td>
+                                    <td class="contact-number">8688916502</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>I.Priya</td>
+                                    <td class="contact-number">9346490262</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>M.Vamshi Vardhan</td>
+                                    <td class="contact-number">8341710238</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="singing" class="club-section">
+                    <button class="btn-back-to-grid">⬅️ Back to Clubs</button>
+                    <h3>🎤 Singing</h3>
+                    <div class="contact-table-container">
+                        <table class="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Student Name</th>
+                                    <th>Contact Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="sno-cell">1</td>
+                                    <td>T.Niharika</td>
+                                    <td class="contact-number">8247729690</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">2</td>
+                                    <td>K.Tejashree</td>
+                                    <td class="contact-number">8309713552</td>
+                                </tr>
+                                <tr>
+                                    <td class="sno-cell">3</td>
+                                    <td>B.Madhu sree</td>
+                                    <td class="contact-number">9493137474</td>
+                                </tr>
+                                 <tr>
+                                    <td class="sno-cell">4</td>
+                                    <td>S.Manoj kumar</td>
+                                    <td class="contact-number">7416865756</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div> <!-- END of #club-details-container -->
+
+        </section>
+
+        <footer id="contact"> <!-- Footer remains as the page bottom contact -->
+            <div class="footer-content">
+                <img src="codecrew logo.png" alt="Code Crew">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">CODE CREW</h3>
+                <p style=" margin-bottom: 2rem;">Department of Computer Science and Engineering</p>
+                
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#themes">Themes</a>
+                    <a href="#schedule">Schedule</a>
+                    <a href="#clubs">Clubs</a>
+                    <a href="mailto:codecrew@jbrec.edu">Email Us</a>
+                </div>
+                
+                <p style="color: rgba(255,255,255,0.4); margin-top: 2rem;">&copy; 2025 Joginpally B.R Engineering College. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- NEW: Contact Modal HTML -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal-btn">&times;</button>
+            <h3>Key Contacts</h3>
+            <div class="contact-table-container">
+                <table class="contact-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Contact Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>T.Dharaneesh</td>
+                            <td class="contact-number">9000311279</td>
+                        </tr>
+                        <tr>
+                            <td>J.Bhupesh sai sri</td>
+                            <td class="contact-number">9989793365</td>
+                        </tr>
+                        <tr>
+                            <td>M.Sateesh reddy</td>
+                            <td class="contact-number">8639241112</td>
+                        </tr>
+                        <tr>
+                            <td>T.Vinuthna</td>
+                            <td class="contact-number">9000311549</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Three.js 3D Background
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        
+        // Create floating particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 1000;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 100;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.1,
+            color: 0x00ff88,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+        
+        // Create rotating torus
+        const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00d4ff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.1
+        });
+        const torus = new THREE.Mesh(geometry, material);
+        scene.add(torus);
+        
+        camera.position.z = 30;
+        
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            torus.rotation.x += 0.001;
+            torus.rotation.y += 0.002;
+            
+            particlesMesh.rotation.y += 0.0005;
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                // We'll let the modal link handler close the nav
+                if (!link.id.includes('show-contact-modal-link')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+        
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if(window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Club Details Show/Hide Logic ---
+            const clubGrid = document.querySelector('.clubs-grid');
+            const clubDetailsContainer = document.getElementById('club-details-container');
+            const clubLinks = document.querySelectorAll('.club-link');
+            const backButtons = document.querySelectorAll('.btn-back-to-grid');
+            const clubsSection = document.getElementById('clubs');
+
+            // Function to show a specific club detail section
+            function showClubSection(targetId) {
+                if (!targetId) return;
+
+                // Hide the main grid
+                if (clubGrid) {
+                    clubGrid.style.display = 'none';
+                }
+
+                // Show the details container
+                if (clubDetailsContainer) {
+                    clubDetailsContainer.style.display = 'block';
+                }
+
+                // Hide all individual club sections first
+                const clubSections = clubDetailsContainer.querySelectorAll('.club-section');
+                clubSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Show the target section
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                    // Scroll to the top of the clubs section
+                    clubsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+
+            // Function to go back to the grid
+            function showClubGrid() {
+                // Hide the details container
+                if (clubDetailsContainer) {
+                    clubDetailsContainer.style.display = 'none';
+                }
+                
+                // Show the main grid
+                if (clubGrid) {
+                    clubGrid.style.display = 'grid'; // Use 'grid' to restore layout
+                }
+            }
+
+            // Add click listeners to all club links
+            clubLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').split('#')[1];
+                    showClubSection(targetId);
+                });
+            });
+
+            // Add click listeners to all "Back" buttons
+            backButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    showClubGrid();
+                });
+            });
+            // --- END of club logic ---
+
+
+            // --- NEW Contact Modal Logic ---
+            const showContactModalLink = document.getElementById('show-contact-modal-link');
+            const contactModal = document.getElementById('contact-modal');
+            const closeModalBtn = contactModal.querySelector('.close-modal-btn');
+            
+            // Show the modal
+            if (showContactModalLink) {
+                showContactModalLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (contactModal) {
+                        contactModal.style.display = 'flex';
+                    }
+                    // Also close mobile nav if open
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Hide the modal with the 'X' button
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    if (contactModal) {
+                        contactModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Hide the modal by clicking the backdrop
+            if (contactModal) {
+                contactModal.addEventListener('click', (e) => {
+                    // Check if the click is on the overlay itself, not the content
+                    if (e.target === contactModal) {
+                        contactModal.style.display = 'none';
+                    }
+                });
+            }
+            // --- END of Contact Modal Logic ---
+
+
+        }); // --- END of DOMContentLoaded ---
+        
+
+        // Countdown Timer (Set to October 28, 2025, 10:00 AM)
+        const eventDate = new Date('2025-10-28T09:30:00').getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+            
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('countdown').innerHTML = '<h3 style="color: var(--primary); font-size: 1.5rem; animation: fadeInUp 0.5s;">Event is Live! 🚀</h3>';
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+            if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+            if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+        }
+        
+        updateCountdown(); // Run once immediately
+        const countdownInterval = setInterval(updateCountdown, 1000); // Update every second
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // Prevent default for club links and modal links
+                if (this.classList.contains('club-link') || this.id === 'show-contact-modal-link') {
+                    e.preventDefault();
+                    return;
+                }
+
+                const href = this.getAttribute('href');
+                
+                // Allow default behavior for external links or different pages
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if(target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target); // Stop observing once animated
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0'; // Ensure it's hidden to start
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(el);
+        });
+        
+        // Mouse parallax effect for hero section
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            
+            torus.rotation.x = moveY * 0.05;
+            torus.rotation.y = moveX * 0.05;
+        });
+        
+        // Add particle interaction on mouse move
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Card tilt effect
+        const cards = document.querySelectorAll('.card, .theme-card, .club-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                // Apply hover effect only if not a link
+                if (!card.querySelector('a.club-link')) {
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
+        });
+        
+        // Typing effect for tagline
+        const tagline = document.querySelector('.tagline');
+        if (tagline) {
+            const text = tagline.textContent;
+            tagline.textContent = '';
+            let i = 0;
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    tagline.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+            
+            setTimeout(typeWriter, 500);
+        }
+        
+        // Add glow effect to buttons on hover
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.3s ease';
+            });
+        });
+        
+        // Random color change for particles
+        let hue = 0;
+        setInterval(() => {
+            hue = (hue + 1) % 360;
+            particlesMaterial.color.setHSL(hue / 360, 1, 0.5);
+        }, 50);
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+                40% { transform: translateX(-50%) translateY(-20px); }
+                60% { transform: translateX(-50%) translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+    </script>
+</body>
+</html>
